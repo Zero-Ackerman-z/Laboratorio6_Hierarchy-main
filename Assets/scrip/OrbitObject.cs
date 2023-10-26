@@ -4,46 +4,28 @@ using UnityEngine;
 
 public class OrbitObject : MonoBehaviour
 {
-    public Transform Object;             // Referencia al objeto 
+    public Rigidbody ObjectRigidbody;   // Referencia al Rigidbody del objeto Sol
     public float orbitSpeed = 10.0f;  // Velocidad de órbita en grados por segundo
-    public float orbitRadius = 10.0f; // Distancia orbital
+    public float orbitRadius = 10.0f; // Distancia orbital desde el Sol
 
-    private float currentAngle = 0.0f;
-
-    private Vector3 sunPosition;
+    private Rigidbody rb;
 
     void Start()
     {
-        sunPosition = Object.position;
+        rb = GetComponent<Rigidbody>();
     }
-
     void Update()
     {
-        // Si la posición del Sol ha cambiado, actualizar la posición de referencia de la Tierra
-        if (Object.position != sunPosition)
-        {
-            Vector3 deltaPosition = Object.position - sunPosition;
-            transform.position += deltaPosition;
-            sunPosition = Object.position;
-        }
+        // Calcula la posición orbital utilizando trigonometría
+        float angle = orbitSpeed * Time.time;
+        float x = Mathf.Cos(angle * Mathf.Deg2Rad) * orbitRadius;
+        float z = Mathf.Sin(angle * Mathf.Deg2Rad) * orbitRadius;
+        Vector3 newPosition = ObjectRigidbody.position + new Vector3(x, 0, z);
 
-        // Calcular la nueva posición de la Tierra en función del tiempo y la distancia orbital
-        currentAngle += orbitSpeed * Time.deltaTime;
-        currentAngle = currentAngle % 360; // Mantener el ángulo dentro de un rango de 0 a 360 grados
-
-        // Convertir el ángulo de grados a radianes
-        float angleInRadians = currentAngle * Mathf.Deg2Rad;
-
-        float x = Mathf.Cos(angleInRadians) * orbitRadius;
-        float z = Mathf.Sin(angleInRadians) * orbitRadius;
-
-        // Establecer la posición relativa de la Tierra al Sol
-        Vector3 newPosition = Object.position + new Vector3(x, 0, z);
+        // Mueve el objeto utilizando transform.position
         transform.position = newPosition;
-
-        // Rotar la Tierra sobre su propio eje
-        transform.Rotate(Vector3.up * orbitSpeed * Time.deltaTime);
     }
+
 }
 
 
