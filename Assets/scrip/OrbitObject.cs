@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class OrbitObject : MonoBehaviour
 {
-    public Rigidbody ObjectRigidbody;   // Referencia al Rigidbody del objeto Sol
-    public float orbitSpeed = 10.0f;  // Velocidad de órbita en grados por segundo
-    public float orbitRadius = 10.0f; // Distancia orbital desde el Sol
+    public Rigidbody ObjectRigidbody;  
+    public float orbitSpeed = 10.0f;  
+    public float orbitRadius = 10.0f; 
 
     private Rigidbody rb;
 
